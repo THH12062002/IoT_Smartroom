@@ -7,7 +7,7 @@ class MQTTHelper {
   final String serverUri = 'io.adafruit.com';
   final String clientId = '12345678';
   final String username = 'thh1206';
-  final String password = 'aio_LBOt55WXcUX5QPPFi1Joa6GbLTL2';
+  final String password = 'aio_NnAq85bLUjlPF856iYzeg8xtBwD1';
 
   final List<String> arrayTopics = [
     'thh1206/feeds/sensor1',

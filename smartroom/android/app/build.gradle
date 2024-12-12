@@ -36,8 +36,15 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.smartroom"
-    compileSdk flutter.compileSdkVersion
+    compileSdk = 34
     ndkVersion flutter.ndkVersion
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def apkName = "smart_room_v${variant.versionName}.apk"
+            output.outputFileName = apkName
+        }
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -53,23 +60,20 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.smartroom"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        applicationId = "com.example.smartroom"
+        minSdk = 21 // Đảm bảo minSdk phù hợp, ví dụ: 21 hoặc cao hơn
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0.0"
     }
 
     buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
-        }
+    release {
+        signingConfig signingConfigs.debug // Sử dụng debug key nếu chưa có key riêng
+        minifyEnabled true // Giảm kích thước APK (tùy chọn)
+        shrinkResources true
     }
+}
 }
 
 flutter {

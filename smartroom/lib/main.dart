@@ -3,8 +3,20 @@ import 'package:provider/provider.dart';
 import 'package:smartroom/chat_screen.dart';
 import 'room_environment_screen.dart';
 import 'rule_provider.dart';
+//import 'package:http/http.dart' as http;
+import 'dart:io';
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() {
+  HttpOverrides.global = MyHttpOverrides();
   runApp(
     MultiProvider(
       providers: [
