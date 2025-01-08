@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:smartroom/chat_screen.dart';
 import 'room_environment_screen.dart';
 import 'rule_provider.dart';
-//import 'package:http/http.dart' as http;
 import 'dart:io';
 
 class MyHttpOverrides extends HttpOverrides {

@@ -7,7 +7,7 @@ class MQTTHelper {
   final String serverUri = 'io.adafruit.com';
   final String clientId = '12345678';
   final String username = 'thh1206';
-  final String password = 'aio_NnAq85bLUjlPF856iYzeg8xtBwD1';
+  final String password = 'aio_Bfhc956eiPipCUP8kYM4DfFzmO8y';
 
   final List<String> arrayTopics = [
     'thh1206/feeds/sensor1',
@@ -44,6 +44,7 @@ class MQTTHelper {
     } catch (e) {
       print('Exception: $e');
       client.disconnect();
+      Future.delayed(Duration(seconds: 5), () => _connect());
     }
   }
 

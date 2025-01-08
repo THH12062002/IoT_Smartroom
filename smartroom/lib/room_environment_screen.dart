@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'mqtt_helper.dart';
@@ -20,7 +19,6 @@ class _RoomEnvironmentScreenState extends State<RoomEnvironmentScreen> {
   String heatIndex = '--';
   bool isFanOn = false;
   bool isLightOn = false;
-  late Timer _timer;
 
   @override
   void initState() {
@@ -45,7 +43,6 @@ class _RoomEnvironmentScreenState extends State<RoomEnvironmentScreen> {
     });
 
     _initializeData();
-    _startDataGeneration();
   }
 
   Future<void> _initializeData() async {
@@ -132,41 +129,8 @@ class _RoomEnvironmentScreenState extends State<RoomEnvironmentScreen> {
     return (index >= 27 && index <= 40) ? Colors.blue : Colors.red;
   }
 
-  void _startDataGeneration() {
-    _timer = Timer.periodic(Duration(seconds: 20), (timer) {
-      double temp = Random().nextDouble() * 30 + 10;
-      double hum = Random().nextDouble() * 60 + 20;
-      double hIndex = _calculateHeatIndex(temp, hum);
-
-      setState(() {
-        temperature = '${temp.toStringAsFixed(1)}°C';
-        humidity = '${hum.toStringAsFixed(1)}%';
-        heatIndex = '${hIndex.toStringAsFixed(1)}°C';
-      });
-
-      mqttHelper.publish('thh1206/feeds/sensor1', temp.toStringAsFixed(1));
-      mqttHelper.publish('thh1206/feeds/sensor2', hum.toStringAsFixed(1));
-      mqttHelper.publish('thh1206/feeds/sensor3', hIndex.toStringAsFixed(1));
-
-      _evaluateRules();
-    });
-  }
-
-  double _calculateHeatIndex(double temp, double hum) {
-    return -8.78469475556 +
-        1.61139411 * temp +
-        2.33854883889 * hum +
-        -0.14611605 * temp * hum +
-        -0.012308094 * (temp * temp) +
-        -0.0164248277778 * (hum * hum) +
-        0.002211732 * (temp * temp) * hum +
-        0.00072546 * temp * (hum * hum) +
-        -0.000003582 * (temp * temp) * (hum * hum);
-  }
-
   @override
   void dispose() {
-    _timer.cancel();
     super.dispose();
   }
 
@@ -209,7 +173,7 @@ class _RoomEnvironmentScreenState extends State<RoomEnvironmentScreen> {
                       Text(
                         temperature,
                         style: TextStyle(
-                          fontSize: 28, // Giảm kích thước chữ
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: _getTemperatureColor(temp),
                         ),
@@ -222,7 +186,7 @@ class _RoomEnvironmentScreenState extends State<RoomEnvironmentScreen> {
                       Text(
                         humidity,
                         style: TextStyle(
-                          fontSize: 28, // Giảm kích thước chữ
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: _getHumidityColor(hum),
                         ),
@@ -232,9 +196,9 @@ class _RoomEnvironmentScreenState extends State<RoomEnvironmentScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 16), // Giảm khoảng cách
+              SizedBox(height: 16),
               Container(
-                padding: EdgeInsets.all(12), // Giảm padding
+                padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -243,12 +207,11 @@ class _RoomEnvironmentScreenState extends State<RoomEnvironmentScreen> {
                 child: Column(
                   children: [
                     Text('Heat Index',
-                        style: TextStyle(
-                            color: Colors.red, fontSize: 18)), // Giảm font size
+                        style: TextStyle(color: Colors.red, fontSize: 18)),
                     Text(
                       heatIndex,
                       style: TextStyle(
-                        fontSize: 28, // Giảm kích thước chữ
+                        fontSize: 28,
                         fontWeight: FontWeight.bold,
                         color: _getHeatIndexColor(hIndex),
                       ),
@@ -256,12 +219,12 @@ class _RoomEnvironmentScreenState extends State<RoomEnvironmentScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 16), // Giảm khoảng cách
+              SizedBox(height: 16),
               Image.asset(
                 'assets/images/logo.png',
-                height: 120, // Giảm kích thước ảnh
+                height: 120,
               ),
-              SizedBox(height: 20), // Giảm khoảng cách
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
